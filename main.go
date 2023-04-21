@@ -29,10 +29,10 @@ func main() {
 	// fmt.Print(lines)
 	problems := parseLines(lines)
 	// fmt.Print(problems)
-
 	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
-
 	correct := 0
+
+quizLoop:
 	for i, p := range problems {
 		fmt.Printf("#%d: %s = ", i+1, p.q)
 		answerChannel := make(chan string)
@@ -44,7 +44,7 @@ func main() {
 		select {
 		case <-timer.C:
 			fmt.Printf("\nTIME'S UP!\nSCORE: %d/%d \n", correct, len(problems))
-			return
+			break quizLoop
 		case answer := <-answerChannel:
 			if answer == p.a {
 				correct++
